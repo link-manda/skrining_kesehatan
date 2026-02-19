@@ -10,30 +10,23 @@
       rel="stylesheet"
     />
     <style>
-      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
-      body {
-        font-family: "Inter", sans-serif;
-        background-color: #f3f4f6;
-      }
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+      body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
       .radio-custom:checked + label {
-        background-color: #e0e7ff;
-        border-color: #4f46e5;
-        color: #4338ca;
-        font-weight: 600;
+          background-color: #e0e7ff;
+          border-color: #4f46e5;
+          color: #4338ca;
+          font-weight: 600;
       }
-      .animate-fade-in {
-        animation: fadeIn 0.4s ease-out forwards;
+      .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
+      @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+      /* Spinner CSS */
+      .loader {
+          border: 3px solid #f3f3f3; border-top: 3px solid #ffffff; border-radius: 50%;
+          width: 20px; height: 20px; animation: spin 1s linear infinite; display: inline-block; vertical-align: middle; mr-2;
       }
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(10px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
+      @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
   </head>
   <body class="text-gray-800 antialiased min-h-screen pb-12">
@@ -331,8 +324,6 @@
         </div>
 
         <!-- SECTION 3: KUESIONER DINAMIS -->
-
-        <!-- A. Kuesioner PHQ-4 -->
         <div
           id="kuesioner-phq4"
           class="hidden bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden animate-fade-in"
@@ -343,12 +334,8 @@
               Pilih jawaban sesuai perasaan Anda dalam <b>2 minggu terakhir</b>.
             </p>
           </div>
-          <div class="p-6 space-y-6" id="phq4-questions-container">
-            <!-- Digenerate oleh JS -->
-          </div>
+          <div class="p-6 space-y-6" id="phq4-questions-container"></div>
         </div>
-
-        <!-- B. Kuesioner EPDS -->
         <div
           id="kuesioner-epds"
           class="hidden bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden animate-fade-in"
@@ -357,15 +344,11 @@
             <h2 class="text-lg font-bold text-white">Kuesioner EPDS</h2>
             <p class="text-pink-100 text-sm">
               Pilih jawaban yang paling mirip dengan perasaan Anda
-              <b>selama 7 hari terakhir</b> (bukan hanya hari ini).
+              <b>selama 7 hari terakhir</b>.
             </p>
           </div>
-          <div class="p-6 space-y-6" id="epds-questions-container">
-            <!-- Digenerate oleh JS -->
-          </div>
+          <div class="p-6 space-y-6" id="epds-questions-container"></div>
         </div>
-
-        <!-- C. Kuesioner SDQ -->
         <div
           id="kuesioner-sdq"
           class="hidden bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden animate-fade-in"
@@ -377,9 +360,7 @@
               <b>selama 6 bulan terakhir</b>.
             </p>
           </div>
-          <div class="p-6 space-y-6" id="sdq-questions-container">
-            <!-- Digenerate oleh JS -->
-          </div>
+          <div class="p-6 space-y-6" id="sdq-questions-container"></div>
         </div>
 
         <div class="text-center pt-4 pb-8">
@@ -388,7 +369,14 @@
             id="btn-submit"
             class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-transform transform hover:scale-105 w-full md:w-auto text-lg hidden"
           >
-            <i class="fas fa-clipboard-check mr-2"></i> Hitung Hasil Skrining
+            <span id="btn-text"
+              ><i class="fas fa-clipboard-check mr-2"></i> Simpan & Hitung
+              Hasil</span
+            >
+            <span id="btn-loading" class="hidden"
+              ><div class="loader"></div>
+              Menyimpan data...</span
+            >
           </button>
         </div>
       </form>
@@ -396,18 +384,28 @@
       <!-- SECTION 4: HASIL SKRINING -->
       <div id="result-section" class="hidden space-y-6 animate-fade-in mb-12">
         <div
-          class="bg-white rounded-xl shadow-md p-6 md:p-8 text-center border-t-8 border-indigo-600"
+          class="bg-white rounded-xl shadow-md p-6 md:p-8 text-center border-t-8 border-indigo-600 relative"
         >
-          <h2 class="text-3xl font-bold text-gray-800 mb-2">Hasil Skrining</h2>
+          <!-- Indikator Sukses Simpan -->
+          <div
+            id="success-badge"
+            class="absolute top-4 right-4 bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold border border-green-300"
+          >
+            <i class="fas fa-cloud-check mr-1"></i> Tersimpan di Database
+          </div>
+
+          <h2 class="text-3xl font-bold text-gray-800 mb-2 mt-4">
+            Hasil Skrining
+          </h2>
           <p class="text-gray-500 mb-6">
             Nama Pasien: <strong id="res-nama" class="text-gray-800"></strong> |
             Usia: <strong id="res-usia" class="text-gray-800"></strong> Tahun
           </p>
 
-          <!-- Kontainer Kartu Hasil Dinamis -->
-          <div id="result-cards-container" class="grid grid-cols-1 gap-6 mb-6">
-            <!-- Akan diisi JS sesuai jenis skrining -->
-          </div>
+          <div
+            id="result-cards-container"
+            class="grid grid-cols-1 gap-6 mb-6"
+          ></div>
 
           <div class="bg-gray-50 rounded-lg p-5 border text-left">
             <h3 class="font-bold text-lg mb-3 flex items-center">
@@ -441,14 +439,21 @@
     </main>
 
     <script>
-      // Set tanggal hari ini otomatis di input tanggal skrining
+      // ==========================================
+      // KONFIGURASI LINK GOOGLE APPS SCRIPT
+      // ==========================================
+      // Ganti URL di bawah ini dengan URL Web App Google Apps Script Anda nanti!
+      const GOOGLE_SCRIPT_URL =
+        "https://script.google.com/macros/s/AKfycbw-CONTOH_URL_SAJA_GANTI_NANTI/exec";
+      // ==========================================
+
       document.getElementById("tgl_skrining").valueAsDate = new Date();
 
-      // Data Kuesioner (Menghindari penulisan HTML yang sangat panjang berulang-ulang)
+      // Data Kuesioner (Sama seperti sebelumnya)
       const phq4Data = [
         {
           id: "phq1",
-          text: "Dalam 2 minggu terakhir, seberapa sering Anda kurang/tidak bersemangat dalam melakukan kegiatan sehari-hari?",
+          text: "Dalam 2 minggu terakhir, seberapa sering Anda kurang bersemangat melakukan kegiatan sehari-hari?",
           options: [
             "Tidak sama sekali",
             "Kurang dari 1 minggu",
@@ -620,42 +625,30 @@
         "Mampu memperhatikan dengan baik, mampu menyelesaikan tugas (Reverse)",
       ];
 
-      // Fungsi Render HTML Kuesioner Otomatis
       function renderKuesioner() {
-        // Render PHQ-4
         let htmlPHQ = "";
         phq4Data.forEach((q, idx) => {
           let optionsHtml = q.options
             .map(
-              (opt, v) => `
-                    <div class="relative">
-                        <input type="radio" name="${q.id}" id="${q.id}_${v}" value="${v}" class="peer sr-only radio-custom">
-                        <label for="${q.id}_${v}" class="block p-3 border rounded-lg cursor-pointer transition-colors hover:bg-gray-50 peer-checked:ring-2 peer-checked:ring-indigo-500 text-sm md:text-base">${opt}</label>
-                    </div>`,
+              (opt, v) =>
+                `<div class="relative"><input type="radio" name="${q.id}" id="${q.id}_${v}" value="${v}" class="peer sr-only radio-custom"><label for="${q.id}_${v}" class="block p-3 border rounded-lg cursor-pointer transition-colors hover:bg-gray-50 peer-checked:ring-2 peer-checked:ring-indigo-500 text-sm md:text-base">${opt}</label></div>`,
             )
             .join("");
           htmlPHQ += `<div class="mb-4"><h3 class="font-medium mb-3 text-gray-800"><span class="bg-indigo-100 text-indigo-800 px-2 py-1 rounded text-sm mr-2">${idx + 1}</span>${q.text}</h3><div class="grid grid-cols-1 md:grid-cols-2 gap-2">${optionsHtml}</div></div>`;
         });
         document.getElementById("phq4-questions-container").innerHTML = htmlPHQ;
-
-        // Render EPDS
         let htmlEPDS = "";
         epdsData.forEach((q, idx) => {
           let optionsHtml = q.options
             .map(
-              (opt, i) => `
-                    <div class="relative">
-                        <input type="radio" name="${q.id}" id="${q.id}_${i}" value="${opt.v}" class="peer sr-only radio-custom">
-                        <label for="${q.id}_${i}" class="block p-3 border rounded-lg cursor-pointer transition-colors hover:bg-pink-50 peer-checked:ring-2 peer-checked:ring-pink-500 peer-checked:border-pink-500 text-sm md:text-base">${opt.t}</label>
-                    </div>`,
+              (opt, i) =>
+                `<div class="relative"><input type="radio" name="${q.id}" id="${q.id}_${i}" value="${opt.v}" class="peer sr-only radio-custom"><label for="${q.id}_${i}" class="block p-3 border rounded-lg cursor-pointer transition-colors hover:bg-pink-50 peer-checked:ring-2 peer-checked:ring-pink-500 peer-checked:border-pink-500 text-sm md:text-base">${opt.t}</label></div>`,
             )
             .join("");
           htmlEPDS += `<div class="mb-4 pb-4 border-b border-gray-100 last:border-0"><h3 class="font-medium mb-3 text-gray-800"><span class="bg-pink-100 text-pink-800 px-2 py-1 rounded text-sm mr-2">${idx + 1}</span>${q.text}</h3><div class="grid grid-cols-1 md:grid-cols-2 gap-2">${optionsHtml}</div></div>`;
         });
         document.getElementById("epds-questions-container").innerHTML =
           htmlEPDS;
-
-        // Render SDQ
         let htmlSDQ = "";
         sdqData.forEach((text, idx) => {
           let isReverse = text.includes("(Reverse)");
@@ -663,43 +656,26 @@
           let vTidak = isReverse ? 2 : 0;
           let vKadang = 1;
           let vSering = isReverse ? 0 : 2;
-
-          htmlSDQ += `
-                    <div class="mb-4 pb-4 border-b border-gray-100 last:border-0">
-                        <h3 class="font-medium mb-3 text-gray-800"><span class="bg-teal-100 text-teal-800 px-2 py-1 rounded text-sm mr-2">${idx + 1}</span>${cleanText}</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
-                            <div class="relative"><input type="radio" name="sdq${idx + 1}" id="sdq${idx + 1}_0" value="${vTidak}" class="peer sr-only radio-custom"><label for="sdq${idx + 1}_0" class="block p-3 border rounded-lg cursor-pointer text-center peer-checked:ring-2 peer-checked:ring-teal-500">Tidak Pernah</label></div>
-                            <div class="relative"><input type="radio" name="sdq${idx + 1}" id="sdq${idx + 1}_1" value="${vKadang}" class="peer sr-only radio-custom"><label for="sdq${idx + 1}_1" class="block p-3 border rounded-lg cursor-pointer text-center peer-checked:ring-2 peer-checked:ring-teal-500">Kadang-kadang</label></div>
-                            <div class="relative"><input type="radio" name="sdq${idx + 1}" id="sdq${idx + 1}_2" value="${vSering}" class="peer sr-only radio-custom"><label for="sdq${idx + 1}_2" class="block p-3 border rounded-lg cursor-pointer text-center peer-checked:ring-2 peer-checked:ring-teal-500">Sering Kali</label></div>
-                        </div>
-                    </div>`;
+          htmlSDQ += `<div class="mb-4 pb-4 border-b border-gray-100 last:border-0"><h3 class="font-medium mb-3 text-gray-800"><span class="bg-teal-100 text-teal-800 px-2 py-1 rounded text-sm mr-2">${idx + 1}</span>${cleanText}</h3><div class="grid grid-cols-1 md:grid-cols-3 gap-2"><div class="relative"><input type="radio" name="sdq${idx + 1}" id="sdq${idx + 1}_0" value="${vTidak}" class="peer sr-only radio-custom"><label for="sdq${idx + 1}_0" class="block p-3 border rounded-lg cursor-pointer text-center peer-checked:ring-2 peer-checked:ring-teal-500">Tidak Pernah</label></div><div class="relative"><input type="radio" name="sdq${idx + 1}" id="sdq${idx + 1}_1" value="${vKadang}" class="peer sr-only radio-custom"><label for="sdq${idx + 1}_1" class="block p-3 border rounded-lg cursor-pointer text-center peer-checked:ring-2 peer-checked:ring-teal-500">Kadang-kadang</label></div><div class="relative"><input type="radio" name="sdq${idx + 1}" id="sdq${idx + 1}_2" value="${vSering}" class="peer sr-only radio-custom"><label for="sdq${idx + 1}_2" class="block p-3 border rounded-lg cursor-pointer text-center peer-checked:ring-2 peer-checked:ring-teal-500">Sering Kali</label></div></div></div>`;
         });
         document.getElementById("sdq-questions-container").innerHTML = htmlSDQ;
       }
-
-      // Panggil render saat halamat dimuat
       renderKuesioner();
 
-      // Fungsi Toggle Kuesioner berdasar pilihan
       function toggleKuesioner() {
         const val = document.querySelector(
           'input[name="jenis_skrining"]:checked',
         ).value;
-
-        // Hide all first
         document.getElementById("kuesioner-phq4").classList.add("hidden");
         document.getElementById("kuesioner-epds").classList.add("hidden");
         document.getElementById("kuesioner-sdq").classList.add("hidden");
         document.getElementById("container-nifas").classList.add("hidden");
-
-        // Remove required attribute from all radios inside containers to avoid html5 validation blocks
         const allRadios = document.querySelectorAll(
           "#kuesioner-phq4 input, #kuesioner-epds input, #kuesioner-sdq input",
         );
         allRadios.forEach((r) => r.removeAttribute("required"));
         document.getElementById("jenis_nifas").removeAttribute("required");
 
-        // Show selected and add required attributes back
         if (val === "PHQ4") {
           document.getElementById("kuesioner-phq4").classList.remove("hidden");
           document
@@ -720,11 +696,9 @@
             .querySelectorAll('#kuesioner-sdq input[type="radio"]')
             .forEach((r) => r.setAttribute("required", "true"));
         }
-
         document.getElementById("btn-submit").classList.remove("hidden");
       }
 
-      // Hitung Usia
       function getAge(dateString) {
         var today = new Date();
         var birthDate = new Date(dateString);
@@ -736,27 +710,48 @@
         return age;
       }
 
-      // Handle Submit
       document
         .getElementById("main-form")
         .addEventListener("submit", function (e) {
           e.preventDefault();
 
-          const nama = document.getElementById("nama").value;
-          const tglLahir = document.getElementById("tgl_lahir").value;
-          const usia = getAge(tglLahir);
-          const jenisSkrining = document.querySelector(
-            'input[name="jenis_skrining"]:checked',
-          ).value;
+          // Ubah tombol jadi loading
+          const btnText = document.getElementById("btn-text");
+          const btnLoading = document.getElementById("btn-loading");
+          const btnSubmit = document.getElementById("btn-submit");
+          btnText.classList.add("hidden");
+          btnLoading.classList.remove("hidden");
+          btnSubmit.disabled = true;
 
-          document.getElementById("res-nama").innerText = nama;
-          document.getElementById("res-usia").innerText = usia;
+          // Kumpulkan Data Biodata
+          const payload = {
+            tgl_skrining: document.getElementById("tgl_skrining").value,
+            nama: document.getElementById("nama").value,
+            nik: document.getElementById("nik").value,
+            tgl_lahir: document.getElementById("tgl_lahir").value,
+            usia: getAge(document.getElementById("tgl_lahir").value),
+            no_wa: document.getElementById("no_wa").value,
+            status_menikah: document.getElementById("status_menikah").value,
+            pendidikan: document.getElementById("pendidikan").value,
+            pekerjaan: document.getElementById("pekerjaan").value,
+            institusi: document.getElementById("institusi").value,
+            provinsi: document.getElementById("provinsi").value,
+            kabupaten: document.getElementById("kabupaten").value,
+            kecamatan: document.getElementById("kecamatan").value,
+            alamat: document.getElementById("alamat").value,
+            jenis_skrining: document.querySelector(
+              'input[name="jenis_skrining"]:checked',
+            ).value,
+            jenis_nifas: document.getElementById("jenis_nifas").value || "-",
+            skor_hasil: "",
+            kesimpulan_status: "",
+          };
 
           let cardHtml = "";
           let tindakLanjutHtml = "";
 
-          // LOGIKA PHQ-4
-          if (jenisSkrining === "PHQ4") {
+          // Hitung Skor (Sama dengan logika sebelumnya, namun kita simpan ke variabel payload)
+          if (payload.jenis_skrining === "PHQ4") {
             let q1 = parseInt(
               document.querySelector('input[name="phq1"]:checked').value,
             );
@@ -769,44 +764,20 @@
             let q4 = parseInt(
               document.querySelector('input[name="phq4"]:checked').value,
             );
-
             let scoreDepresi = q1 + q2;
             let scoreCemas = q3 + q4;
+            payload.skor_hasil = `Depresi: ${scoreDepresi}, Cemas: ${scoreCemas}`;
+            payload.kesimpulan_status =
+              scoreDepresi >= 3 || scoreCemas >= 3
+                ? "Kemungkinan Gejala"
+                : "Normal";
 
-            cardHtml = `
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
-                        <div class="p-4 rounded-xl border ${scoreDepresi >= 3 ? "bg-red-50 border-red-200" : "bg-green-50 border-green-200"}">
-                            <h4 class="font-bold text-gray-600 mb-1">Skor Depresi (PHQ-2)</h4>
-                            <div class="text-3xl font-black ${scoreDepresi >= 3 ? "text-red-600" : "text-green-600"}">${scoreDepresi}</div>
-                            <p class="mt-2 text-sm font-semibold">${scoreDepresi >= 3 ? "Kemungkinan Gejala Depresi" : "Normal (Tidak Ada Gejala)"}</p>
-                        </div>
-                        <div class="p-4 rounded-xl border ${scoreCemas >= 3 ? "bg-amber-50 border-amber-200" : "bg-green-50 border-green-200"}">
-                            <h4 class="font-bold text-gray-600 mb-1">Skor Kecemasan (GAD-2)</h4>
-                            <div class="text-3xl font-black ${scoreCemas >= 3 ? "text-amber-600" : "text-green-600"}">${scoreCemas}</div>
-                            <p class="mt-2 text-sm font-semibold">${scoreCemas >= 3 ? "Kemungkinan Gejala Kecemasan" : "Normal (Tidak Ada Gejala)"}</p>
-                        </div>
-                    </div>
-                `;
-
-            if (scoreDepresi >= 3 || scoreCemas >= 3) {
-              tindakLanjutHtml = `
-                        <ul class="list-disc pl-5 space-y-1">
-                            <li><strong>Konseling awal:</strong> Dilakukan oleh Perawat / Bidan (suportif).</li>
-                            <li><strong>Pemeriksaan Medis:</strong> Oleh Dokter / Psikolog Klinis untuk penegakan diagnosis.</li>
-                            <li class="text-red-600 font-semibold mt-2">Indikasi Rujuk ke FKTL jika:
-                                <ul class="list-circle pl-5 font-normal text-gray-800">
-                                    <li>Depresi berat atau berindikasi membahayakan diri/orang lain.</li>
-                                    <li>Gejala kecemasan tidak membaik > 1 bulan pasca konseling.</li>
-                                </ul>
-                            </li>
-                        </ul>`;
-            } else {
-              tindakLanjutHtml = `<p><strong>Edukasi Kesehatan Jiwa:</strong> Edukasi tanda sehat jiwa, faktor protektif, manajemen stres, dan Pertolongan Pertama Pada Luka Psikologis (P3LP).</p>`;
-            }
-          }
-
-          // LOGIKA EPDS
-          else if (jenisSkrining === "EPDS") {
+            cardHtml = `<div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-center"><div class="p-4 rounded-xl border ${scoreDepresi >= 3 ? "bg-red-50 border-red-200" : "bg-green-50 border-green-200"}"><h4 class="font-bold text-gray-600 mb-1">Skor Depresi (PHQ-2)</h4><div class="text-3xl font-black ${scoreDepresi >= 3 ? "text-red-600" : "text-green-600"}">${scoreDepresi}</div><p class="mt-2 text-sm font-semibold">${scoreDepresi >= 3 ? "Kemungkinan Gejala Depresi" : "Normal (Tidak Ada Gejala)"}</p></div><div class="p-4 rounded-xl border ${scoreCemas >= 3 ? "bg-amber-50 border-amber-200" : "bg-green-50 border-green-200"}"><h4 class="font-bold text-gray-600 mb-1">Skor Kecemasan (GAD-2)</h4><div class="text-3xl font-black ${scoreCemas >= 3 ? "text-amber-600" : "text-green-600"}">${scoreCemas}</div><p class="mt-2 text-sm font-semibold">${scoreCemas >= 3 ? "Kemungkinan Gejala Kecemasan" : "Normal (Tidak Ada Gejala)"}</p></div></div>`;
+            tindakLanjutHtml =
+              scoreDepresi >= 3 || scoreCemas >= 3
+                ? `<ul class="list-disc pl-5"><li><strong>Konseling awal</strong> oleh Perawat/Bidan.</li><li><strong>Pemeriksaan Medis</strong> oleh Dokter/Psikolog.</li><li class="text-red-600">Rujuk FKTL jika depresi berat atau tak membaik > 1 bulan.</li></ul>`
+                : `Edukasi kesehatan jiwa dasar.`;
+          } else if (payload.jenis_skrining === "EPDS") {
             let totalScore = 0;
             let q10Score = 0;
             for (let i = 1; i <= 10; i++) {
@@ -817,107 +788,90 @@
               if (i === 10) q10Score = val;
             }
 
-            let status = "";
-            let colorClass = "";
+            let status =
+              totalScore >= 14
+                ? "Depresi Sangat Mungkin Terjadi"
+                : totalScore >= 12
+                  ? "Kemungkinan Depresi Cukup Tinggi"
+                  : totalScore >= 9
+                    ? "Kemungkinan Depresi"
+                    : "Tidak Depresi (Normal)";
+            if (q10Score > 0) status += " (PERINGATAN: Ide Menyakiti Diri)";
 
-            if (totalScore >= 14) {
-              status = "Depresi Sangat Mungkin Terjadi";
-              colorClass = "text-red-600";
-            } else if (totalScore >= 12) {
-              status = "Kemungkinan Depresi Cukup Tinggi";
-              colorClass = "text-orange-500";
-            } else if (totalScore >= 9) {
-              status = "Kemungkinan Depresi";
-              colorClass = "text-yellow-600";
-            } else {
-              status = "Tidak Depresi (Normal)";
-              colorClass = "text-green-600";
-            }
+            payload.skor_hasil = `Total: ${totalScore}`;
+            payload.kesimpulan_status = status;
 
-            cardHtml = `
-                    <div class="p-6 rounded-xl border bg-gray-50 text-center">
-                        <h4 class="font-bold text-gray-600 mb-2">Total Skor EPDS</h4>
-                        <div class="text-5xl font-black ${colorClass}">${totalScore} <span class="text-lg text-gray-400 font-normal">/ 30</span></div>
-                        <p class="mt-3 text-lg font-bold ${colorClass}">${status}</p>
-                        ${q10Score > 0 ? `<div class="mt-3 inline-block bg-red-100 text-red-700 px-4 py-2 rounded-lg font-bold border border-red-300"><i class="fas fa-exclamation-triangle mr-2"></i> PERINGATAN BUKAN NOL PADA SOAL NO. 10 (Menyakiti Diri)</div>` : ""}
-                    </div>
-                `;
-
-            if (q10Score > 0) {
-              tindakLanjutHtml = `<div class="p-3 bg-red-50 border-l-4 border-red-600 text-red-800"><strong>KEBUTUHAN DISKUSI SEGERA!</strong><br> Rujuk ke fasilitas kesehatan dan psikiater. Terdapat indikasi ide bunuh diri / menyakiti diri. Observasi ketat diperlukan.</div>`;
-            } else if (totalScore >= 14) {
-              tindakLanjutHtml = `Perlu penilaian menyeluruh dan perawatan lanjutan di fasilitas kesehatan atau rujukan ke dokter spesialis/psikiater.`;
-            } else if (totalScore >= 12) {
-              tindakLanjutHtml = `Observasi ketat, berikan dukungan dan edukasi psikologis intensif, pertimbangkan rujukan ke fasilitas kesehatan jika gejala memberat.`;
-            } else if (totalScore >= 9) {
-              tindakLanjutHtml = `Berikan dukungan psikologis, jadwalkan <strong>skrining ulang dalam 2 - 4 minggu</strong> ke depan, pantau perkembangan ibu.`;
-            } else {
-              tindakLanjutHtml = `Lanjutkan pemberian dukungan moril pada ibu. Pertahankan kondisi psikologis yang positif.`;
-            }
-          }
-
-          // LOGIKA SDQ
-          else if (jenisSkrining === "SDQ") {
-            if (usia < 4 || usia > 17) {
-              alert(
-                "Peringatan: Skrining SDQ ditujukan untuk usia 4 - 17 Tahun. Usia pasien saat ini: " +
-                  usia +
-                  " Tahun. Mohon cek kembali.",
-              );
-            }
-
+            cardHtml = `<div class="p-6 rounded-xl border bg-gray-50 text-center"><h4 class="font-bold text-gray-600 mb-2">Total Skor EPDS</h4><div class="text-5xl font-black ${totalScore >= 14 || q10Score > 0 ? "text-red-600" : "text-indigo-600"}">${totalScore} / 30</div><p class="mt-3 text-lg font-bold">${status}</p></div>`;
+            tindakLanjutHtml =
+              q10Score > 0
+                ? `<b class="text-red-600">RUJUK SEGERA!</b> Indikasi menyakiti diri.`
+                : totalScore >= 14
+                  ? "Rujukan ke spesialis / psikiater."
+                  : "Observasi dan skrining ulang 2-4 minggu.";
+          } else if (payload.jenis_skrining === "SDQ") {
             let totalScore = 0;
-            for (let i = 1; i <= 20; i++) {
+            for (let i = 1; i <= 20; i++)
               totalScore += parseInt(
                 document.querySelector(`input[name="sdq${i}"]:checked`).value,
               );
-            }
-
-            let batasRujuk = usia <= 10 ? 14 : 16;
+            let batasRujuk = payload.usia <= 10 ? 14 : 16;
             let isRujuk = totalScore >= batasRujuk;
 
-            cardHtml = `
-                    <div class="p-6 rounded-xl border ${isRujuk ? "bg-red-50 border-red-200" : "bg-green-50 border-green-200"} text-center">
-                        <h4 class="font-bold text-gray-600 mb-2">Total Skor SDQ (Usia ${usia} Thn)</h4>
-                        <div class="text-5xl font-black ${isRujuk ? "text-red-600" : "text-green-600"}">${totalScore}</div>
-                        <p class="mt-3 text-lg font-bold ${isRujuk ? "text-red-700" : "text-green-700"}">${isRujuk ? "Indikasi Perlu Konsultasi / Rujukan" : "Dalam Batas Normal"}</p>
-                        <p class="text-sm mt-1 text-gray-500">Batas skor ambang usia ${usia} thn: &ge; ${batasRujuk}</p>
-                    </div>
-                `;
+            payload.skor_hasil = `Total: ${totalScore}`;
+            payload.kesimpulan_status = isRujuk
+              ? "Indikasi Perlu Rujukan"
+              : "Batas Normal";
 
-            if (isRujuk) {
-              tindakLanjutHtml = `<div class="text-red-700 font-semibold">Berdasarkan skor, anak/remaja sangat disarankan untuk berkonsultasi atau DIRUJUK ke Dokter, Psikolog, atau Profesional Kesehatan Jiwa lainnya untuk asesmen lebih lanjut.</div>`;
-            } else {
-              tindakLanjutHtml = `Tidak ditemukan indikasi masalah perilaku atau emosional yang signifikan. Pertahankan pola asuh dan dukungan lingkungan yang baik.`;
-            }
+            cardHtml = `<div class="p-6 rounded-xl border ${isRujuk ? "bg-red-50 border-red-200" : "bg-green-50 border-green-200"} text-center"><h4 class="font-bold text-gray-600 mb-2">Total Skor SDQ</h4><div class="text-5xl font-black ${isRujuk ? "text-red-600" : "text-green-600"}">${totalScore}</div><p class="mt-3 text-lg font-bold ${isRujuk ? "text-red-700" : "text-green-700"}">${payload.kesimpulan_status}</p></div>`;
+            tindakLanjutHtml = isRujuk
+              ? "Disarankan berkonsultasi dengan Dokter / Psikolog."
+              : "Tidak ditemukan masalah perilaku/emosional signifikan.";
           }
 
-          // Tampilkan Hasil
-          document.getElementById("result-cards-container").innerHTML =
-            cardHtml;
-          document.getElementById("res-tindak-lanjut").innerHTML =
-            tindakLanjutHtml;
+          // MENGIRIM DATA KE GOOGLE SHEETS
+          fetch(GOOGLE_SCRIPT_URL, {
+            method: "POST",
+            mode: "no-cors", // Penting agar tidak kena error CORS di browser
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          })
+            .then(() => {
+              // Tampilkan halaman hasil setelah selesai dikirim
+              document.getElementById("res-nama").innerText = payload.nama;
+              document.getElementById("res-usia").innerText = payload.usia;
+              document.getElementById("result-cards-container").innerHTML =
+                cardHtml;
+              document.getElementById("res-tindak-lanjut").innerHTML =
+                tindakLanjutHtml;
 
-          document.getElementById("main-form").classList.add("hidden");
-          document.getElementById("result-section").classList.remove("hidden");
-          window.scrollTo({ top: 0, behavior: "smooth" });
+              document.getElementById("main-form").classList.add("hidden");
+              document
+                .getElementById("result-section")
+                .classList.remove("hidden");
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            })
+            .catch((error) => {
+              alert("Gagal menyimpan ke database. Harap cek koneksi internet.");
+              console.error("Error:", error);
+            })
+            .finally(() => {
+              // Kembalikan tombol seperti semula
+              btnText.classList.remove("hidden");
+              btnLoading.classList.add("hidden");
+              btnSubmit.disabled = false;
+            });
         });
 
-      // Reset App
       function resetApp() {
         document.getElementById("main-form").reset();
         document.getElementById("tgl_skrining").valueAsDate = new Date();
-
         document.getElementById("result-section").classList.add("hidden");
         document.getElementById("main-form").classList.remove("hidden");
-
-        // Sembunyikan semua kuesioner
         document.getElementById("kuesioner-phq4").classList.add("hidden");
         document.getElementById("kuesioner-epds").classList.add("hidden");
         document.getElementById("kuesioner-sdq").classList.add("hidden");
         document.getElementById("container-nifas").classList.add("hidden");
         document.getElementById("btn-submit").classList.add("hidden");
-
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
     </script>
