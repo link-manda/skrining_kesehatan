@@ -1,0 +1,925 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistem Skrining Kesehatan Terpadu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f3f4f6;
+      }
+      .radio-custom:checked + label {
+        background-color: #e0e7ff;
+        border-color: #4f46e5;
+        color: #4338ca;
+        font-weight: 600;
+      }
+      .animate-fade-in {
+        animation: fadeIn 0.4s ease-out forwards;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body class="text-gray-800 antialiased min-h-screen pb-12">
+    <!-- Header -->
+    <header class="bg-indigo-700 text-white shadow-md sticky top-0 z-50">
+      <div
+        class="max-w-4xl mx-auto px-4 py-4 md:py-6 flex items-center justify-between"
+      >
+        <div>
+          <h1 class="text-xl md:text-2xl font-bold">
+            Cek Kesehatan Gratis (CKG)
+          </h1>
+          <p class="text-sm text-indigo-200 mt-1">
+            Sistem Skrining Kesehatan Jiwa Terpadu
+          </p>
+        </div>
+        <i
+          class="fas fa-heartbeat text-3xl md:text-4xl text-indigo-300 opacity-80"
+        ></i>
+      </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 mt-6">
+      <!-- Form Container -->
+      <form id="main-form" class="space-y-6">
+        <!-- SECTION 1: BIODATA -->
+        <div
+          class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden"
+        >
+          <div class="bg-indigo-50 px-6 py-4 border-b border-indigo-100">
+            <h2 class="text-lg font-bold text-indigo-800">
+              <i class="fas fa-user-edit mr-2"></i>Data Diri Pasien
+            </h2>
+          </div>
+          <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Tanggal Skrining *</label
+              ><input
+                type="date"
+                id="tgl_skrining"
+                required
+                class="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Nama Lengkap *</label
+              ><input
+                type="text"
+                id="nama"
+                required
+                class="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >NIK *</label
+              ><input
+                type="number"
+                id="nik"
+                required
+                class="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Tanggal Lahir *</label
+              ><input
+                type="date"
+                id="tgl_lahir"
+                required
+                class="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Nomor WhatsApp *</label
+              ><input
+                type="tel"
+                id="no_wa"
+                required
+                class="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Status Menikah *</label
+              >
+              <select
+                id="status_menikah"
+                required
+                class="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500"
+              >
+                <option value="">-- Pilih Status --</option>
+                <option value="Belum Menikah">Belum Menikah</option>
+                <option value="Menikah">Menikah</option>
+                <option value="Cerai Hidup">Cerai Hidup</option>
+                <option value="Cerai Mati">Cerai Mati</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Pendidikan *</label
+              >
+              <select
+                id="pendidikan"
+                required
+                class="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500"
+              >
+                <option value="">-- Pilih Pendidikan --</option>
+                <option value="SD/Sederajat">SD/Sederajat</option>
+                <option value="SMP/Sederajat">SMP/Sederajat</option>
+                <option value="SMA/Sederajat">SMA/Sederajat</option>
+                <option value="Diploma/Sarjana">Diploma/Sarjana</option>
+                <option value="Tidak Sekolah">Tidak Sekolah</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Pekerjaan</label
+              ><input
+                type="text"
+                id="pekerjaan"
+                class="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500"
+                placeholder="Opsional"
+              />
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Nama Institusi</label
+              ><input
+                type="text"
+                id="institusi"
+                class="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500"
+                placeholder="Untuk yang masih bersekolah / bekerja (Opsional)"
+              />
+            </div>
+
+            <!-- Domisili -->
+            <div class="md:col-span-2 border-t pt-4 mt-2">
+              <h3 class="font-semibold text-gray-700 mb-3">Alamat Domisili</h3>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >Provinsi *</label
+                  ><input
+                    type="text"
+                    id="provinsi"
+                    required
+                    class="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >Kabupaten/Kota *</label
+                  ><input
+                    type="text"
+                    id="kabupaten"
+                    required
+                    class="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >Kecamatan *</label
+                  ><input
+                    type="text"
+                    id="kecamatan"
+                    required
+                    class="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500"
+                  />
+                </div>
+                <div class="md:col-span-3">
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >Alamat Lengkap (Jalan/RT/RW) *</label
+                  ><textarea
+                    id="alamat"
+                    required
+                    rows="2"
+                    class="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500"
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 2: PEMILIHAN JENIS SKRINING -->
+        <div
+          class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden"
+        >
+          <div class="bg-indigo-50 px-6 py-4 border-b border-indigo-100">
+            <h2 class="text-lg font-bold text-indigo-800">
+              <i class="fas fa-stethoscope mr-2"></i>Pilih Instrumen Skrining
+            </h2>
+          </div>
+          <div class="p-6">
+            <label class="block text-sm font-bold text-gray-700 mb-2"
+              >Pilih Jenis Skrining Sesuai Kondisi Pasien: *</label
+            >
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="relative">
+                <input
+                  type="radio"
+                  name="jenis_skrining"
+                  id="skrining_phq4"
+                  value="PHQ4"
+                  class="peer sr-only radio-custom"
+                  required
+                  onchange="toggleKuesioner()"
+                />
+                <label
+                  for="skrining_phq4"
+                  class="block p-4 border-2 rounded-lg cursor-pointer transition-colors hover:bg-gray-50 peer-checked:ring-2 peer-checked:ring-indigo-500 peer-checked:border-indigo-500 h-full"
+                >
+                  <i
+                    class="fas fa-users text-2xl mb-2 text-gray-400 peer-checked:text-indigo-600"
+                  ></i>
+                  <div class="font-bold">Skrining PHQ-4</div>
+                  <div class="text-xs text-gray-500 font-normal mt-1">
+                    Untuk Dewasa & Lansia (Usia &ge; 18 Tahun)
+                  </div>
+                </label>
+              </div>
+              <div class="relative">
+                <input
+                  type="radio"
+                  name="jenis_skrining"
+                  id="skrining_epds"
+                  value="EPDS"
+                  class="peer sr-only radio-custom"
+                  onchange="toggleKuesioner()"
+                />
+                <label
+                  for="skrining_epds"
+                  class="block p-4 border-2 rounded-lg cursor-pointer transition-colors hover:bg-gray-50 peer-checked:ring-2 peer-checked:ring-indigo-500 peer-checked:border-indigo-500 h-full"
+                >
+                  <i
+                    class="fas fa-baby text-2xl mb-2 text-gray-400 peer-checked:text-indigo-600"
+                  ></i>
+                  <div class="font-bold">Skrining EPDS</div>
+                  <div class="text-xs text-gray-500 font-normal mt-1">
+                    Khusus untuk Ibu Hamil / Nifas
+                  </div>
+                </label>
+              </div>
+              <div class="relative">
+                <input
+                  type="radio"
+                  name="jenis_skrining"
+                  id="skrining_sdq"
+                  value="SDQ"
+                  class="peer sr-only radio-custom"
+                  onchange="toggleKuesioner()"
+                />
+                <label
+                  for="skrining_sdq"
+                  class="block p-4 border-2 rounded-lg cursor-pointer transition-colors hover:bg-gray-50 peer-checked:ring-2 peer-checked:ring-indigo-500 peer-checked:border-indigo-500 h-full"
+                >
+                  <i
+                    class="fas fa-child text-2xl mb-2 text-gray-400 peer-checked:text-indigo-600"
+                  ></i>
+                  <div class="font-bold">Skrining SDQ</div>
+                  <div class="text-xs text-gray-500 font-normal mt-1">
+                    Untuk Anak & Remaja (Usia 4 - 17 Tahun)
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- Pilihan Tambahan Khusus EPDS -->
+            <div
+              id="container-nifas"
+              class="hidden mt-4 p-4 bg-pink-50 rounded-lg border border-pink-100"
+            >
+              <label class="block text-sm font-bold text-pink-800 mb-2"
+                >Kondisi Kehamilan / Nifas Saat Ini: *</label
+              >
+              <select
+                id="jenis_nifas"
+                class="w-full md:w-1/2 border-gray-300 rounded-md shadow-sm p-2 border focus:ring-pink-500 focus:border-pink-500"
+              >
+                <option value="">-- Pilih Kondisi --</option>
+                <option value="Hamil Trimester 1">Hamil Trimester 1</option>
+                <option value="Hamil Trimester 2">Hamil Trimester 2</option>
+                <option value="Hamil Trimester 3">Hamil Trimester 3</option>
+                <option value="Nifas (< 40 Hari)">
+                  Nifas (< 40 Hari pasca melahirkan)
+                </option>
+                <option value="Pasca Nifas">Pasca Nifas</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 3: KUESIONER DINAMIS -->
+
+        <!-- A. Kuesioner PHQ-4 -->
+        <div
+          id="kuesioner-phq4"
+          class="hidden bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden animate-fade-in"
+        >
+          <div class="bg-indigo-600 px-6 py-4">
+            <h2 class="text-lg font-bold text-white">Kuesioner PHQ-4</h2>
+            <p class="text-indigo-100 text-sm">
+              Pilih jawaban sesuai perasaan Anda dalam <b>2 minggu terakhir</b>.
+            </p>
+          </div>
+          <div class="p-6 space-y-6" id="phq4-questions-container">
+            <!-- Digenerate oleh JS -->
+          </div>
+        </div>
+
+        <!-- B. Kuesioner EPDS -->
+        <div
+          id="kuesioner-epds"
+          class="hidden bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden animate-fade-in"
+        >
+          <div class="bg-pink-600 px-6 py-4">
+            <h2 class="text-lg font-bold text-white">Kuesioner EPDS</h2>
+            <p class="text-pink-100 text-sm">
+              Pilih jawaban yang paling mirip dengan perasaan Anda
+              <b>selama 7 hari terakhir</b> (bukan hanya hari ini).
+            </p>
+          </div>
+          <div class="p-6 space-y-6" id="epds-questions-container">
+            <!-- Digenerate oleh JS -->
+          </div>
+        </div>
+
+        <!-- C. Kuesioner SDQ -->
+        <div
+          id="kuesioner-sdq"
+          class="hidden bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden animate-fade-in"
+        >
+          <div class="bg-teal-600 px-6 py-4">
+            <h2 class="text-lg font-bold text-white">Kuesioner SDQ</h2>
+            <p class="text-teal-100 text-sm">
+              Berikan jawaban sebagaimana sesuatu telah terjadi pada anak
+              <b>selama 6 bulan terakhir</b>.
+            </p>
+          </div>
+          <div class="p-6 space-y-6" id="sdq-questions-container">
+            <!-- Digenerate oleh JS -->
+          </div>
+        </div>
+
+        <div class="text-center pt-4 pb-8">
+          <button
+            type="submit"
+            id="btn-submit"
+            class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-transform transform hover:scale-105 w-full md:w-auto text-lg hidden"
+          >
+            <i class="fas fa-clipboard-check mr-2"></i> Hitung Hasil Skrining
+          </button>
+        </div>
+      </form>
+
+      <!-- SECTION 4: HASIL SKRINING -->
+      <div id="result-section" class="hidden space-y-6 animate-fade-in mb-12">
+        <div
+          class="bg-white rounded-xl shadow-md p-6 md:p-8 text-center border-t-8 border-indigo-600"
+        >
+          <h2 class="text-3xl font-bold text-gray-800 mb-2">Hasil Skrining</h2>
+          <p class="text-gray-500 mb-6">
+            Nama Pasien: <strong id="res-nama" class="text-gray-800"></strong> |
+            Usia: <strong id="res-usia" class="text-gray-800"></strong> Tahun
+          </p>
+
+          <!-- Kontainer Kartu Hasil Dinamis -->
+          <div id="result-cards-container" class="grid grid-cols-1 gap-6 mb-6">
+            <!-- Akan diisi JS sesuai jenis skrining -->
+          </div>
+
+          <div class="bg-gray-50 rounded-lg p-5 border text-left">
+            <h3 class="font-bold text-lg mb-3 flex items-center">
+              <i class="fas fa-info-circle text-indigo-500 mr-2"></i>
+              Interpretasi & Tindak Lanjut:
+            </h3>
+            <div
+              id="res-tindak-lanjut"
+              class="text-gray-700 leading-relaxed space-y-2"
+            ></div>
+          </div>
+
+          <div class="mt-8 flex flex-col md:flex-row justify-center gap-4">
+            <button
+              type="button"
+              onclick="window.print()"
+              class="bg-slate-800 hover:bg-slate-900 text-white font-bold py-2 px-6 rounded-lg transition-colors"
+            >
+              <i class="fas fa-print mr-2"></i> Cetak PDF
+            </button>
+            <button
+              type="button"
+              onclick="resetApp()"
+              class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-6 rounded-lg transition-colors"
+            >
+              <i class="fas fa-redo mr-2"></i> Skrining Baru
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Set tanggal hari ini otomatis di input tanggal skrining
+      document.getElementById("tgl_skrining").valueAsDate = new Date();
+
+      // Data Kuesioner (Menghindari penulisan HTML yang sangat panjang berulang-ulang)
+      const phq4Data = [
+        {
+          id: "phq1",
+          text: "Dalam 2 minggu terakhir, seberapa sering Anda kurang/tidak bersemangat dalam melakukan kegiatan sehari-hari?",
+          options: [
+            "Tidak sama sekali",
+            "Kurang dari 1 minggu",
+            "Lebih dari 1 minggu",
+            "Hampir setiap hari",
+          ],
+        },
+        {
+          id: "phq2",
+          text: "Dalam 2 minggu terakhir, seberapa sering Anda merasa murung, tertekan, atau putus asa?",
+          options: [
+            "Tidak sama sekali",
+            "Kurang dari 1 minggu",
+            "Lebih dari 1 minggu",
+            "Hampir setiap hari",
+          ],
+        },
+        {
+          id: "phq3",
+          text: "Dalam 2 minggu terakhir, seberapa sering Anda merasa gugup, cemas, atau gelisah?",
+          options: [
+            "Tidak sama sekali",
+            "Kurang dari 1 minggu",
+            "Lebih dari 1 minggu",
+            "Hampir setiap hari",
+          ],
+        },
+        {
+          id: "phq4",
+          text: "Dalam 2 minggu terakhir, seberapa sering Anda tidak mampu mengendalikan rasa khawatir?",
+          options: [
+            "Tidak sama sekali",
+            "Kurang dari 1 minggu",
+            "Lebih dari 1 minggu",
+            "Hampir setiap hari",
+          ],
+        },
+      ];
+
+      const epdsData = [
+        {
+          id: "ep1",
+          text: "Saya bisa tertawa dan melihat sisi lucu dari berbagai hal:",
+          options: [
+            { t: "Ya, seperti biasanya", v: 0 },
+            { t: "Sekarang tidak terlalu sering", v: 1 },
+            { t: "Sekarang agak jarang", v: 2 },
+            { t: "Tidak sama sekali", v: 3 },
+          ],
+        },
+        {
+          id: "ep2",
+          text: "Saya memandang masa depan dengan penuh harapan:",
+          options: [
+            { t: "Seperti yang pernah saya lakukan dulu", v: 0 },
+            { t: "Agak kurang dari biasanya", v: 1 },
+            { t: "Jelas kurang dari biasanya", v: 2 },
+            { t: "Hampir tidak sama sekali", v: 3 },
+          ],
+        },
+        {
+          id: "ep3",
+          text: "Saya menyalahkan diri saya sendiri ketika ada hal-hal yang salah:",
+          options: [
+            { t: "Ya, hampir selalu", v: 3 },
+            { t: "Ya, kadang-kadang", v: 2 },
+            { t: "Tidak terlalu sering", v: 1 },
+            { t: "Tidak, tidak pernah", v: 0 },
+          ],
+        },
+        {
+          id: "ep4",
+          text: "Saya cemas atau khawatir tanpa alasan yang jelas:",
+          options: [
+            { t: "Tidak, tidak sama sekali", v: 0 },
+            { t: "Hampir tidak pernah", v: 1 },
+            { t: "Ya, kadang-kadang", v: 2 },
+            { t: "Ya, sangat sering", v: 3 },
+          ],
+        },
+        {
+          id: "ep5",
+          text: "Saya merasa takut atau panik tanpa alasan yang sangat jelas:",
+          options: [
+            { t: "Ya, cukup sering", v: 3 },
+            { t: "Ya, kadang-kadang", v: 2 },
+            { t: "Tidak, tidak sering", v: 1 },
+            { t: "Tidak, tidak sama sekali", v: 0 },
+          ],
+        },
+        {
+          id: "ep6",
+          text: "Banyak hal menjadi beban untuk saya:",
+          options: [
+            { t: "Ya, sering kali saya tidak dapat mengatasinya", v: 3 },
+            {
+              t: "Ya, kadang saya tidak dapat mengatasi seperti biasanya",
+              v: 2,
+            },
+            {
+              t: "Tidak, saya hampir selalu dapat mengatasinya dengan baik",
+              v: 1,
+            },
+            { t: "Tidak, saya selalu dapat mengatasinya dengan baik", v: 0 },
+          ],
+        },
+        {
+          id: "ep7",
+          text: "Saya merasa tidak bahagia sehingga sulit tidur:",
+          options: [
+            { t: "Ya, sering kali", v: 3 },
+            { t: "Ya, kadang-kadang", v: 2 },
+            { t: "Tidak terlalu sering", v: 1 },
+            { t: "Tidak, tidak sama sekali", v: 0 },
+          ],
+        },
+        {
+          id: "ep8",
+          text: "Saya merasa sedih atau menderita:",
+          options: [
+            { t: "Ya, sering kali", v: 3 },
+            { t: "Ya, cukup sering", v: 2 },
+            { t: "Tidak terlalu sering", v: 1 },
+            { t: "Tidak, tidak sama sekali", v: 0 },
+          ],
+        },
+        {
+          id: "ep9",
+          text: "Saya merasa sangat tidak senang sehingga saya sering menangis:",
+          options: [
+            { t: "Ya, sering kali", v: 3 },
+            { t: "Ya, cukup sering", v: 2 },
+            { t: "Hanya sesekali", v: 1 },
+            { t: "Tidak, tidak pernah", v: 0 },
+          ],
+        },
+        {
+          id: "ep10",
+          text: "Pikiran untuk menyakiti diri sendiri telah terfikir oleh saya:",
+          options: [
+            { t: "Ya, cukup sering", v: 3 },
+            { t: "Kadang-kadang", v: 2 },
+            { t: "Hampir tidak pernah", v: 1 },
+            { t: "Tidak pernah", v: 0 },
+          ],
+        },
+      ];
+
+      const sdqData = [
+        "Gelisah, hiperaktif, tidak bisa diam untuk waktu lama",
+        "Sering mengeluh sakit kepala, sakit perut atau sakit-sakit lainnya",
+        "Sering sulit mengendalikan kemarahan",
+        "Cenderung menyendiri atau lebih suka bermain sendiri",
+        "Umumnya bertingkah laku baik, biasanya melakukan apa yang disuruh atau diminta (Reverse)",
+        "Cemas atau sering kuatir terhadap apapun",
+        "Terus menerus bergerak dengan resah atau mengeliat-geliat",
+        "Mempunyai satu atau lebih teman baik (Reverse)",
+        "Sering berkelahi dengan anak lain atau mengintimidasi mereka",
+        "Sering menangis, merasa tidak bahagia atau sedih",
+        "Pada umumnya disukai oleh anak lain (Reverse)",
+        "Perhatian mudah teralih, tidak dapat berkonsentrasi",
+        "Mudah kehilangan rasa percaya diri, gugup dalam situasi yang baru",
+        "Sering berbohong atau berbuat curang",
+        "Diganggu, dipermainkan, atau diintimidasi oleh anak lain",
+        "Sebelum melakukan sesuatu berpikir dahulu tentang akibatnya (Reverse)",
+        "Mencuri dari rumah, sekolah atau tempat lain",
+        "Lebih mudah berteman dengan orang dewasa daripada anak-anak lain",
+        "Mudah takut atau banyak yang ditakuti",
+        "Mampu memperhatikan dengan baik, mampu menyelesaikan tugas (Reverse)",
+      ];
+
+      // Fungsi Render HTML Kuesioner Otomatis
+      function renderKuesioner() {
+        // Render PHQ-4
+        let htmlPHQ = "";
+        phq4Data.forEach((q, idx) => {
+          let optionsHtml = q.options
+            .map(
+              (opt, v) => `
+                    <div class="relative">
+                        <input type="radio" name="${q.id}" id="${q.id}_${v}" value="${v}" class="peer sr-only radio-custom">
+                        <label for="${q.id}_${v}" class="block p-3 border rounded-lg cursor-pointer transition-colors hover:bg-gray-50 peer-checked:ring-2 peer-checked:ring-indigo-500 text-sm md:text-base">${opt}</label>
+                    </div>`,
+            )
+            .join("");
+          htmlPHQ += `<div class="mb-4"><h3 class="font-medium mb-3 text-gray-800"><span class="bg-indigo-100 text-indigo-800 px-2 py-1 rounded text-sm mr-2">${idx + 1}</span>${q.text}</h3><div class="grid grid-cols-1 md:grid-cols-2 gap-2">${optionsHtml}</div></div>`;
+        });
+        document.getElementById("phq4-questions-container").innerHTML = htmlPHQ;
+
+        // Render EPDS
+        let htmlEPDS = "";
+        epdsData.forEach((q, idx) => {
+          let optionsHtml = q.options
+            .map(
+              (opt, i) => `
+                    <div class="relative">
+                        <input type="radio" name="${q.id}" id="${q.id}_${i}" value="${opt.v}" class="peer sr-only radio-custom">
+                        <label for="${q.id}_${i}" class="block p-3 border rounded-lg cursor-pointer transition-colors hover:bg-pink-50 peer-checked:ring-2 peer-checked:ring-pink-500 peer-checked:border-pink-500 text-sm md:text-base">${opt.t}</label>
+                    </div>`,
+            )
+            .join("");
+          htmlEPDS += `<div class="mb-4 pb-4 border-b border-gray-100 last:border-0"><h3 class="font-medium mb-3 text-gray-800"><span class="bg-pink-100 text-pink-800 px-2 py-1 rounded text-sm mr-2">${idx + 1}</span>${q.text}</h3><div class="grid grid-cols-1 md:grid-cols-2 gap-2">${optionsHtml}</div></div>`;
+        });
+        document.getElementById("epds-questions-container").innerHTML =
+          htmlEPDS;
+
+        // Render SDQ
+        let htmlSDQ = "";
+        sdqData.forEach((text, idx) => {
+          let isReverse = text.includes("(Reverse)");
+          let cleanText = text.replace("(Reverse)", "").trim();
+          let vTidak = isReverse ? 2 : 0;
+          let vKadang = 1;
+          let vSering = isReverse ? 0 : 2;
+
+          htmlSDQ += `
+                    <div class="mb-4 pb-4 border-b border-gray-100 last:border-0">
+                        <h3 class="font-medium mb-3 text-gray-800"><span class="bg-teal-100 text-teal-800 px-2 py-1 rounded text-sm mr-2">${idx + 1}</span>${cleanText}</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                            <div class="relative"><input type="radio" name="sdq${idx + 1}" id="sdq${idx + 1}_0" value="${vTidak}" class="peer sr-only radio-custom"><label for="sdq${idx + 1}_0" class="block p-3 border rounded-lg cursor-pointer text-center peer-checked:ring-2 peer-checked:ring-teal-500">Tidak Pernah</label></div>
+                            <div class="relative"><input type="radio" name="sdq${idx + 1}" id="sdq${idx + 1}_1" value="${vKadang}" class="peer sr-only radio-custom"><label for="sdq${idx + 1}_1" class="block p-3 border rounded-lg cursor-pointer text-center peer-checked:ring-2 peer-checked:ring-teal-500">Kadang-kadang</label></div>
+                            <div class="relative"><input type="radio" name="sdq${idx + 1}" id="sdq${idx + 1}_2" value="${vSering}" class="peer sr-only radio-custom"><label for="sdq${idx + 1}_2" class="block p-3 border rounded-lg cursor-pointer text-center peer-checked:ring-2 peer-checked:ring-teal-500">Sering Kali</label></div>
+                        </div>
+                    </div>`;
+        });
+        document.getElementById("sdq-questions-container").innerHTML = htmlSDQ;
+      }
+
+      // Panggil render saat halamat dimuat
+      renderKuesioner();
+
+      // Fungsi Toggle Kuesioner berdasar pilihan
+      function toggleKuesioner() {
+        const val = document.querySelector(
+          'input[name="jenis_skrining"]:checked',
+        ).value;
+
+        // Hide all first
+        document.getElementById("kuesioner-phq4").classList.add("hidden");
+        document.getElementById("kuesioner-epds").classList.add("hidden");
+        document.getElementById("kuesioner-sdq").classList.add("hidden");
+        document.getElementById("container-nifas").classList.add("hidden");
+
+        // Remove required attribute from all radios inside containers to avoid html5 validation blocks
+        const allRadios = document.querySelectorAll(
+          "#kuesioner-phq4 input, #kuesioner-epds input, #kuesioner-sdq input",
+        );
+        allRadios.forEach((r) => r.removeAttribute("required"));
+        document.getElementById("jenis_nifas").removeAttribute("required");
+
+        // Show selected and add required attributes back
+        if (val === "PHQ4") {
+          document.getElementById("kuesioner-phq4").classList.remove("hidden");
+          document
+            .querySelectorAll('#kuesioner-phq4 input[type="radio"]')
+            .forEach((r) => r.setAttribute("required", "true"));
+        } else if (val === "EPDS") {
+          document.getElementById("kuesioner-epds").classList.remove("hidden");
+          document.getElementById("container-nifas").classList.remove("hidden");
+          document
+            .getElementById("jenis_nifas")
+            .setAttribute("required", "true");
+          document
+            .querySelectorAll('#kuesioner-epds input[type="radio"]')
+            .forEach((r) => r.setAttribute("required", "true"));
+        } else if (val === "SDQ") {
+          document.getElementById("kuesioner-sdq").classList.remove("hidden");
+          document
+            .querySelectorAll('#kuesioner-sdq input[type="radio"]')
+            .forEach((r) => r.setAttribute("required", "true"));
+        }
+
+        document.getElementById("btn-submit").classList.remove("hidden");
+      }
+
+      // Hitung Usia
+      function getAge(dateString) {
+        var today = new Date();
+        var birthDate = new Date(dateString);
+        var age = today.getFullYear() - birthDate.getFullYear();
+        var m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+          age--;
+        }
+        return age;
+      }
+
+      // Handle Submit
+      document
+        .getElementById("main-form")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const nama = document.getElementById("nama").value;
+          const tglLahir = document.getElementById("tgl_lahir").value;
+          const usia = getAge(tglLahir);
+          const jenisSkrining = document.querySelector(
+            'input[name="jenis_skrining"]:checked',
+          ).value;
+
+          document.getElementById("res-nama").innerText = nama;
+          document.getElementById("res-usia").innerText = usia;
+
+          let cardHtml = "";
+          let tindakLanjutHtml = "";
+
+          // LOGIKA PHQ-4
+          if (jenisSkrining === "PHQ4") {
+            let q1 = parseInt(
+              document.querySelector('input[name="phq1"]:checked').value,
+            );
+            let q2 = parseInt(
+              document.querySelector('input[name="phq2"]:checked').value,
+            );
+            let q3 = parseInt(
+              document.querySelector('input[name="phq3"]:checked').value,
+            );
+            let q4 = parseInt(
+              document.querySelector('input[name="phq4"]:checked').value,
+            );
+
+            let scoreDepresi = q1 + q2;
+            let scoreCemas = q3 + q4;
+
+            cardHtml = `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
+                        <div class="p-4 rounded-xl border ${scoreDepresi >= 3 ? "bg-red-50 border-red-200" : "bg-green-50 border-green-200"}">
+                            <h4 class="font-bold text-gray-600 mb-1">Skor Depresi (PHQ-2)</h4>
+                            <div class="text-3xl font-black ${scoreDepresi >= 3 ? "text-red-600" : "text-green-600"}">${scoreDepresi}</div>
+                            <p class="mt-2 text-sm font-semibold">${scoreDepresi >= 3 ? "Kemungkinan Gejala Depresi" : "Normal (Tidak Ada Gejala)"}</p>
+                        </div>
+                        <div class="p-4 rounded-xl border ${scoreCemas >= 3 ? "bg-amber-50 border-amber-200" : "bg-green-50 border-green-200"}">
+                            <h4 class="font-bold text-gray-600 mb-1">Skor Kecemasan (GAD-2)</h4>
+                            <div class="text-3xl font-black ${scoreCemas >= 3 ? "text-amber-600" : "text-green-600"}">${scoreCemas}</div>
+                            <p class="mt-2 text-sm font-semibold">${scoreCemas >= 3 ? "Kemungkinan Gejala Kecemasan" : "Normal (Tidak Ada Gejala)"}</p>
+                        </div>
+                    </div>
+                `;
+
+            if (scoreDepresi >= 3 || scoreCemas >= 3) {
+              tindakLanjutHtml = `
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li><strong>Konseling awal:</strong> Dilakukan oleh Perawat / Bidan (suportif).</li>
+                            <li><strong>Pemeriksaan Medis:</strong> Oleh Dokter / Psikolog Klinis untuk penegakan diagnosis.</li>
+                            <li class="text-red-600 font-semibold mt-2">Indikasi Rujuk ke FKTL jika:
+                                <ul class="list-circle pl-5 font-normal text-gray-800">
+                                    <li>Depresi berat atau berindikasi membahayakan diri/orang lain.</li>
+                                    <li>Gejala kecemasan tidak membaik > 1 bulan pasca konseling.</li>
+                                </ul>
+                            </li>
+                        </ul>`;
+            } else {
+              tindakLanjutHtml = `<p><strong>Edukasi Kesehatan Jiwa:</strong> Edukasi tanda sehat jiwa, faktor protektif, manajemen stres, dan Pertolongan Pertama Pada Luka Psikologis (P3LP).</p>`;
+            }
+          }
+
+          // LOGIKA EPDS
+          else if (jenisSkrining === "EPDS") {
+            let totalScore = 0;
+            let q10Score = 0;
+            for (let i = 1; i <= 10; i++) {
+              let val = parseInt(
+                document.querySelector(`input[name="ep${i}"]:checked`).value,
+              );
+              totalScore += val;
+              if (i === 10) q10Score = val;
+            }
+
+            let status = "";
+            let colorClass = "";
+
+            if (totalScore >= 14) {
+              status = "Depresi Sangat Mungkin Terjadi";
+              colorClass = "text-red-600";
+            } else if (totalScore >= 12) {
+              status = "Kemungkinan Depresi Cukup Tinggi";
+              colorClass = "text-orange-500";
+            } else if (totalScore >= 9) {
+              status = "Kemungkinan Depresi";
+              colorClass = "text-yellow-600";
+            } else {
+              status = "Tidak Depresi (Normal)";
+              colorClass = "text-green-600";
+            }
+
+            cardHtml = `
+                    <div class="p-6 rounded-xl border bg-gray-50 text-center">
+                        <h4 class="font-bold text-gray-600 mb-2">Total Skor EPDS</h4>
+                        <div class="text-5xl font-black ${colorClass}">${totalScore} <span class="text-lg text-gray-400 font-normal">/ 30</span></div>
+                        <p class="mt-3 text-lg font-bold ${colorClass}">${status}</p>
+                        ${q10Score > 0 ? `<div class="mt-3 inline-block bg-red-100 text-red-700 px-4 py-2 rounded-lg font-bold border border-red-300"><i class="fas fa-exclamation-triangle mr-2"></i> PERINGATAN BUKAN NOL PADA SOAL NO. 10 (Menyakiti Diri)</div>` : ""}
+                    </div>
+                `;
+
+            if (q10Score > 0) {
+              tindakLanjutHtml = `<div class="p-3 bg-red-50 border-l-4 border-red-600 text-red-800"><strong>KEBUTUHAN DISKUSI SEGERA!</strong><br> Rujuk ke fasilitas kesehatan dan psikiater. Terdapat indikasi ide bunuh diri / menyakiti diri. Observasi ketat diperlukan.</div>`;
+            } else if (totalScore >= 14) {
+              tindakLanjutHtml = `Perlu penilaian menyeluruh dan perawatan lanjutan di fasilitas kesehatan atau rujukan ke dokter spesialis/psikiater.`;
+            } else if (totalScore >= 12) {
+              tindakLanjutHtml = `Observasi ketat, berikan dukungan dan edukasi psikologis intensif, pertimbangkan rujukan ke fasilitas kesehatan jika gejala memberat.`;
+            } else if (totalScore >= 9) {
+              tindakLanjutHtml = `Berikan dukungan psikologis, jadwalkan <strong>skrining ulang dalam 2 - 4 minggu</strong> ke depan, pantau perkembangan ibu.`;
+            } else {
+              tindakLanjutHtml = `Lanjutkan pemberian dukungan moril pada ibu. Pertahankan kondisi psikologis yang positif.`;
+            }
+          }
+
+          // LOGIKA SDQ
+          else if (jenisSkrining === "SDQ") {
+            if (usia < 4 || usia > 17) {
+              alert(
+                "Peringatan: Skrining SDQ ditujukan untuk usia 4 - 17 Tahun. Usia pasien saat ini: " +
+                  usia +
+                  " Tahun. Mohon cek kembali.",
+              );
+            }
+
+            let totalScore = 0;
+            for (let i = 1; i <= 20; i++) {
+              totalScore += parseInt(
+                document.querySelector(`input[name="sdq${i}"]:checked`).value,
+              );
+            }
+
+            let batasRujuk = usia <= 10 ? 14 : 16;
+            let isRujuk = totalScore >= batasRujuk;
+
+            cardHtml = `
+                    <div class="p-6 rounded-xl border ${isRujuk ? "bg-red-50 border-red-200" : "bg-green-50 border-green-200"} text-center">
+                        <h4 class="font-bold text-gray-600 mb-2">Total Skor SDQ (Usia ${usia} Thn)</h4>
+                        <div class="text-5xl font-black ${isRujuk ? "text-red-600" : "text-green-600"}">${totalScore}</div>
+                        <p class="mt-3 text-lg font-bold ${isRujuk ? "text-red-700" : "text-green-700"}">${isRujuk ? "Indikasi Perlu Konsultasi / Rujukan" : "Dalam Batas Normal"}</p>
+                        <p class="text-sm mt-1 text-gray-500">Batas skor ambang usia ${usia} thn: &ge; ${batasRujuk}</p>
+                    </div>
+                `;
+
+            if (isRujuk) {
+              tindakLanjutHtml = `<div class="text-red-700 font-semibold">Berdasarkan skor, anak/remaja sangat disarankan untuk berkonsultasi atau DIRUJUK ke Dokter, Psikolog, atau Profesional Kesehatan Jiwa lainnya untuk asesmen lebih lanjut.</div>`;
+            } else {
+              tindakLanjutHtml = `Tidak ditemukan indikasi masalah perilaku atau emosional yang signifikan. Pertahankan pola asuh dan dukungan lingkungan yang baik.`;
+            }
+          }
+
+          // Tampilkan Hasil
+          document.getElementById("result-cards-container").innerHTML =
+            cardHtml;
+          document.getElementById("res-tindak-lanjut").innerHTML =
+            tindakLanjutHtml;
+
+          document.getElementById("main-form").classList.add("hidden");
+          document.getElementById("result-section").classList.remove("hidden");
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+
+      // Reset App
+      function resetApp() {
+        document.getElementById("main-form").reset();
+        document.getElementById("tgl_skrining").valueAsDate = new Date();
+
+        document.getElementById("result-section").classList.add("hidden");
+        document.getElementById("main-form").classList.remove("hidden");
+
+        // Sembunyikan semua kuesioner
+        document.getElementById("kuesioner-phq4").classList.add("hidden");
+        document.getElementById("kuesioner-epds").classList.add("hidden");
+        document.getElementById("kuesioner-sdq").classList.add("hidden");
+        document.getElementById("container-nifas").classList.add("hidden");
+        document.getElementById("btn-submit").classList.add("hidden");
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    </script>
+  </body>
+</html>
