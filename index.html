@@ -1,266 +1,623 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sistem Skrining Kesehatan Terpadu</title>
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="assets/img/favicon/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="assets/img/favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="assets/img/favicon/favicon-16x16.png"
+    />
+    <link rel="manifest" href="assets/img/favicon/site.webmanifest" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="assets/css/style.css" rel="stylesheet">
-</head>
-<body class="text-gray-800 antialiased min-h-screen pb-12">
-
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link href="assets/css/style.css" rel="stylesheet" />
+  </head>
+  <body class="text-gray-800 antialiased min-h-screen pb-12">
     <!-- Header -->
     <header class="bg-indigo-700 text-white shadow-md sticky top-0 z-50">
-        <div class="max-w-4xl mx-auto px-4 py-4 md:py-6 flex items-center justify-between">
-            <div>
-                <h1 class="text-xl md:text-2xl font-bold">Cek Kesehatan Gratis (CKG)</h1>
-                <p class="text-sm text-indigo-200 mt-1">Sistem Skrining Kesehatan Jiwa Terpadu</p>
-            </div>
-            <i class="fas fa-heartbeat text-3xl md:text-4xl text-indigo-300 opacity-80"></i>
+      <div
+        class="max-w-4xl mx-auto px-4 py-4 md:py-6 flex items-center justify-between"
+      >
+        <div>
+          <h1 class="text-xl md:text-2xl font-bold">
+            Cek Kesehatan Gratis (CKG)
+          </h1>
+          <p class="text-sm text-indigo-200 mt-1">
+            Sistem Skrining Kesehatan Jiwa Terpadu
+          </p>
         </div>
+        <i
+          class="fas fa-heartbeat text-3xl md:text-4xl text-indigo-300 opacity-80"
+        ></i>
+      </div>
     </header>
 
     <main class="max-w-4xl mx-auto px-4 mt-6">
+      <!-- Progress Bar -->
+      <div class="mb-8" id="progress-container">
+        <div class="flex justify-between mb-2">
+          <span
+            class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-indigo-600 bg-indigo-200"
+            id="stepIndicatorText"
+          >
+            Langkah 1 dari 3: Data Diri
+          </span>
+        </div>
+        <div class="flex h-2 mb-4 overflow-hidden text-xs bg-gray-200 rounded">
+          <div
+            style="width: 33%"
+            class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-indigo-500 transition-all duration-500"
+            id="progressBar"
+          ></div>
+        </div>
+      </div>
 
-        <!-- Progress Bar -->
-        <div class="mb-8" id="progress-container">
-            <div class="flex justify-between mb-2">
-                <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-indigo-600 bg-indigo-200" id="stepIndicatorText">
-                    Langkah 1 dari 3: Data Diri
-                </span>
+      <!-- Form Container -->
+      <form id="main-form" class="space-y-6">
+        <!-- Honeypot Field -->
+        <input
+          type="text"
+          name="website_url_honeypot"
+          id="website_url_honeypot"
+          style="display: none"
+          tabindex="-1"
+          autocomplete="off"
+        />
+
+        <!-- STEP 1: BIODATA -->
+        <div id="step1" class="step-container animate-fade-in">
+          <div
+            class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden"
+          >
+            <div class="bg-indigo-50 px-6 py-4 border-b border-indigo-100">
+              <h2 class="text-lg font-bold text-indigo-800">
+                <i class="fas fa-user-edit mr-2"></i>Data Diri Pasien
+              </h2>
             </div>
-            <div class="flex h-2 mb-4 overflow-hidden text-xs bg-gray-200 rounded">
-                <div style="width: 33%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-indigo-500 transition-all duration-500" id="progressBar"></div>
+            <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Tanggal Skrining *</label
+                ><input
+                  type="date"
+                  id="tgl_skrining"
+                  required
+                  class="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Nama Lengkap *</label
+                ><input
+                  type="text"
+                  id="nama"
+                  maxlength="100"
+                  required
+                  class="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >NIK *
+                  <span
+                    id="nik_feedback"
+                    class="text-xs float-right mt-1"
+                  ></span
+                ></label>
+                <input
+                  type="text"
+                  id="nik"
+                  maxlength="16"
+                  required
+                  pattern="[0-9]{16}"
+                  placeholder="16 Digit NIK"
+                  class="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500"
+                  title="NIK harus 16 digit angka"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Tanggal Lahir *</label
+                ><input
+                  type="date"
+                  id="tgl_lahir"
+                  required
+                  class="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Nomor WhatsApp *</label
+                ><input
+                  type="tel"
+                  id="no_wa"
+                  maxlength="15"
+                  required
+                  class="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Status Menikah *</label
+                >
+                <select
+                  id="status_menikah"
+                  required
+                  class="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500"
+                >
+                  <option value="">-- Pilih Status --</option>
+                  <option value="Belum Menikah">Belum Menikah</option>
+                  <option value="Menikah">Menikah</option>
+                  <option value="Cerai Hidup">Cerai Hidup</option>
+                  <option value="Cerai Mati">Cerai Mati</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Pendidikan *</label
+                >
+                <select
+                  id="pendidikan"
+                  required
+                  class="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500"
+                >
+                  <option value="">-- Pilih Pendidikan --</option>
+                  <option value="SD/Sederajat">SD/Sederajat</option>
+                  <option value="SMP/Sederajat">SMP/Sederajat</option>
+                  <option value="SMA/Sederajat">SMA/Sederajat</option>
+                  <option value="Diploma/Sarjana">Diploma/Sarjana</option>
+                  <option value="Tidak Sekolah">Tidak Sekolah</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Pekerjaan</label
+                ><input
+                  type="text"
+                  id="pekerjaan"
+                  maxlength="50"
+                  class="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500"
+                  placeholder="Opsional"
+                />
+              </div>
+              <div class="md:col-span-2">
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Nama Institusi</label
+                ><input
+                  type="text"
+                  id="institusi"
+                  maxlength="100"
+                  class="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500"
+                  placeholder="Untuk yang masih bersekolah / bekerja (Opsional)"
+                />
+              </div>
+
+              <!-- Domisili -->
+              <div class="md:col-span-2 border-t pt-4 mt-2">
+                <h3 class="font-semibold text-gray-700 mb-3">
+                  Alamat Domisili
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1"
+                      >Provinsi *</label
+                    ><input
+                      type="text"
+                      id="provinsi"
+                      maxlength="50"
+                      required
+                      class="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500"
+                    />
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1"
+                      >Kabupaten/Kota *</label
+                    ><input
+                      type="text"
+                      id="kabupaten"
+                      maxlength="50"
+                      required
+                      class="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500"
+                    />
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1"
+                      >Kecamatan *</label
+                    ><input
+                      type="text"
+                      id="kecamatan"
+                      maxlength="50"
+                      required
+                      class="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500"
+                    />
+                  </div>
+                  <div class="md:col-span-3">
+                    <label class="block text-sm font-medium text-gray-700 mb-1"
+                      >Alamat Lengkap (Jalan/RT/RW) *</label
+                    ><textarea
+                      id="alamat"
+                      maxlength="250"
+                      required
+                      rows="2"
+                      class="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500"
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
+          <!-- Tombol Next Step 1 -->
+          <div class="mt-6 flex justify-end">
+            <button
+              type="button"
+              onclick="nextStep(2)"
+              class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-lg transition-colors"
+            >
+              Lanjut ke Pilihan Skrining <i class="fas fa-arrow-right ml-2"></i>
+            </button>
+          </div>
         </div>
 
-        <!-- Form Container -->
-        <form id="main-form" class="space-y-6">
-
-            <!-- Honeypot Field -->
-            <input type="text" name="website_url_honeypot" id="website_url_honeypot" style="display:none;" tabindex="-1" autocomplete="off">
-
-            <!-- STEP 1: BIODATA -->
-            <div id="step1" class="step-container animate-fade-in">
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div class="bg-indigo-50 px-6 py-4 border-b border-indigo-100">
-                        <h2 class="text-lg font-bold text-indigo-800"><i class="fas fa-user-edit mr-2"></i>Data Diri Pasien</h2>
-                    </div>
-                    <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Tanggal Skrining *</label><input type="date" id="tgl_skrining" required class="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500"></div>
-                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap *</label><input type="text" id="nama" maxlength="100" required class="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500"></div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">NIK * <span id="nik_feedback" class="text-xs float-right mt-1"></span></label>
-                            <input type="text" id="nik" maxlength="16" required pattern="[0-9]{16}" placeholder="16 Digit NIK" class="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500" title="NIK harus 16 digit angka">
-                        </div>
-                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Tanggal Lahir *</label><input type="date" id="tgl_lahir" required class="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500"></div>
-                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Nomor WhatsApp *</label><input type="tel" id="no_wa" maxlength="15" required class="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500"></div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Status Menikah *</label>
-                            <select id="status_menikah" required class="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500">
-                                <option value="">-- Pilih Status --</option>
-                                <option value="Belum Menikah">Belum Menikah</option>
-                                <option value="Menikah">Menikah</option>
-                                <option value="Cerai Hidup">Cerai Hidup</option>
-                                <option value="Cerai Mati">Cerai Mati</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Pendidikan *</label>
-                            <select id="pendidikan" required class="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500">
-                                <option value="">-- Pilih Pendidikan --</option>
-                                <option value="SD/Sederajat">SD/Sederajat</option>
-                                <option value="SMP/Sederajat">SMP/Sederajat</option>
-                                <option value="SMA/Sederajat">SMA/Sederajat</option>
-                                <option value="Diploma/Sarjana">Diploma/Sarjana</option>
-                                <option value="Tidak Sekolah">Tidak Sekolah</option>
-                            </select>
-                        </div>
-                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Pekerjaan</label><input type="text" id="pekerjaan" maxlength="50" class="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500" placeholder="Opsional"></div>
-                        <div class="md:col-span-2"><label class="block text-sm font-medium text-gray-700 mb-1">Nama Institusi</label><input type="text" id="institusi" maxlength="100" class="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500" placeholder="Untuk yang masih bersekolah / bekerja (Opsional)"></div>
-
-                        <!-- Domisili -->
-                        <div class="md:col-span-2 border-t pt-4 mt-2">
-                            <h3 class="font-semibold text-gray-700 mb-3">Alamat Domisili</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div><label class="block text-sm font-medium text-gray-700 mb-1">Provinsi *</label><input type="text" id="provinsi" maxlength="50" required class="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500"></div>
-                                <div><label class="block text-sm font-medium text-gray-700 mb-1">Kabupaten/Kota *</label><input type="text" id="kabupaten" maxlength="50" required class="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500"></div>
-                                <div><label class="block text-sm font-medium text-gray-700 mb-1">Kecamatan *</label><input type="text" id="kecamatan" maxlength="50" required class="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500"></div>
-                                <div class="md:col-span-3"><label class="block text-sm font-medium text-gray-700 mb-1">Alamat Lengkap (Jalan/RT/RW) *</label><textarea id="alamat" maxlength="250" required rows="2" class="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500"></textarea></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Tombol Next Step 1 -->
-                <div class="mt-6 flex justify-end">
-                    <button type="button" onclick="nextStep(2)" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-lg transition-colors">
-                        Lanjut ke Pilihan Skrining <i class="fas fa-arrow-right ml-2"></i>
-                    </button>
-                </div>
+        <!-- STEP 2: PEMILIHAN JENIS SKRINING -->
+        <div id="step2" class="step-container hidden animate-fade-in">
+          <div
+            class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden"
+          >
+            <div class="bg-indigo-50 px-6 py-4 border-b border-indigo-100">
+              <h2 class="text-lg font-bold text-indigo-800">
+                <i class="fas fa-stethoscope mr-2"></i>Pilih Instrumen Skrining
+              </h2>
             </div>
-
-            <!-- STEP 2: PEMILIHAN JENIS SKRINING -->
-            <div id="step2" class="step-container hidden animate-fade-in">
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div class="bg-indigo-50 px-6 py-4 border-b border-indigo-100">
-                        <h2 class="text-lg font-bold text-indigo-800"><i class="fas fa-stethoscope mr-2"></i>Pilih Instrumen Skrining</h2>
+            <div class="p-6">
+              <label class="block text-sm font-bold text-gray-700 mb-2"
+                >Pilih Jenis Skrining Sesuai Kondisi Pasien: *</label
+              >
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="relative">
+                  <input
+                    type="radio"
+                    name="jenis_skrining"
+                    id="skrining_phq4"
+                    value="PHQ4"
+                    class="peer sr-only radio-custom"
+                    required
+                    onchange="toggleKuesioner()"
+                  />
+                  <label
+                    for="skrining_phq4"
+                    class="block p-4 border-2 rounded-lg cursor-pointer transition-colors hover:bg-gray-50 peer-checked:ring-2 peer-checked:ring-indigo-500 peer-checked:border-indigo-500 h-full"
+                  >
+                    <i
+                      class="fas fa-users text-2xl mb-2 text-gray-400 peer-checked:text-indigo-600"
+                    ></i>
+                    <div class="font-bold">Skrining PHQ-4</div>
+                    <div class="text-xs text-gray-500 font-normal mt-1">
+                      Untuk Dewasa & Lansia (Usia &ge; 18 Tahun)
                     </div>
-                    <div class="p-6">
-                        <label class="block text-sm font-bold text-gray-700 mb-2">Pilih Jenis Skrining Sesuai Kondisi Pasien: *</label>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div class="relative">
-                                <input type="radio" name="jenis_skrining" id="skrining_phq4" value="PHQ4" class="peer sr-only radio-custom" required onchange="toggleKuesioner()">
-                                <label for="skrining_phq4" class="block p-4 border-2 rounded-lg cursor-pointer transition-colors hover:bg-gray-50 peer-checked:ring-2 peer-checked:ring-indigo-500 peer-checked:border-indigo-500 h-full">
-                                    <i class="fas fa-users text-2xl mb-2 text-gray-400 peer-checked:text-indigo-600"></i>
-                                    <div class="font-bold">Skrining PHQ-4</div>
-                                    <div class="text-xs text-gray-500 font-normal mt-1">Untuk Dewasa & Lansia (Usia &ge; 18 Tahun)</div>
-                                </label>
-                            </div>
-                            <div class="relative">
-                                <input type="radio" name="jenis_skrining" id="skrining_epds" value="EPDS" class="peer sr-only radio-custom" onchange="toggleKuesioner()">
-                                <label for="skrining_epds" class="block p-4 border-2 rounded-lg cursor-pointer transition-colors hover:bg-gray-50 peer-checked:ring-2 peer-checked:ring-indigo-500 peer-checked:border-indigo-500 h-full">
-                                    <i class="fas fa-baby text-2xl mb-2 text-gray-400 peer-checked:text-indigo-600"></i>
-                                    <div class="font-bold">Skrining EPDS</div>
-                                    <div class="text-xs text-gray-500 font-normal mt-1">Khusus untuk Ibu Hamil / Nifas</div>
-                                </label>
-                            </div>
-                            <div class="relative">
-                                <input type="radio" name="jenis_skrining" id="skrining_sdq" value="SDQ" class="peer sr-only radio-custom" onchange="toggleKuesioner()">
-                                <label for="skrining_sdq" class="block p-4 border-2 rounded-lg cursor-pointer transition-colors hover:bg-gray-50 peer-checked:ring-2 peer-checked:ring-indigo-500 peer-checked:border-indigo-500 h-full">
-                                    <i class="fas fa-child text-2xl mb-2 text-gray-400 peer-checked:text-indigo-600"></i>
-                                    <div class="font-bold">Skrining SDQ</div>
-                                    <div class="text-xs text-gray-500 font-normal mt-1">Untuk Anak & Remaja (Usia 4 - 17 Tahun)</div>
-                                </label>
-                            </div>
-                        </div>
-
-                        <!-- Pilihan Tambahan Khusus EPDS -->
-                        <div id="container-nifas" class="hidden mt-4 p-4 bg-pink-50 rounded-lg border border-pink-100">
-                            <label class="block text-sm font-bold text-pink-800 mb-2">Kondisi Kehamilan / Nifas Saat Ini: *</label>
-                            <select id="jenis_nifas" class="w-full md:w-1/2 border-gray-300 rounded-md shadow-sm p-2 border focus:ring-pink-500 focus:border-pink-500">
-                                <option value="">-- Pilih Kondisi --</option>
-                                <option value="Hamil Trimester 1">Hamil Trimester 1</option>
-                                <option value="Hamil Trimester 2">Hamil Trimester 2</option>
-                                <option value="Hamil Trimester 3">Hamil Trimester 3</option>
-                                <option value="Nifas (< 40 Hari)">Nifas (< 40 Hari pasca melahirkan)</option>
-                                <option value="Pasca Nifas">Pasca Nifas</option>
-                            </select>
-                        </div>
+                  </label>
+                </div>
+                <div class="relative">
+                  <input
+                    type="radio"
+                    name="jenis_skrining"
+                    id="skrining_epds"
+                    value="EPDS"
+                    class="peer sr-only radio-custom"
+                    onchange="toggleKuesioner()"
+                  />
+                  <label
+                    for="skrining_epds"
+                    class="block p-4 border-2 rounded-lg cursor-pointer transition-colors hover:bg-gray-50 peer-checked:ring-2 peer-checked:ring-indigo-500 peer-checked:border-indigo-500 h-full"
+                  >
+                    <i
+                      class="fas fa-baby text-2xl mb-2 text-gray-400 peer-checked:text-indigo-600"
+                    ></i>
+                    <div class="font-bold">Skrining EPDS</div>
+                    <div class="text-xs text-gray-500 font-normal mt-1">
+                      Khusus untuk Ibu Hamil / Nifas
                     </div>
+                  </label>
                 </div>
-                <!-- Tombol Navigasi Step 2 -->
-                <div class="mt-6 flex justify-between">
-                    <button type="button" onclick="prevStep(1)" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-6 rounded-lg transition-colors">
-                        <i class="fas fa-arrow-left mr-2"></i> Kembali
-                    </button>
-                    <button type="button" onclick="nextStep(3)" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-lg transition-colors" id="btn-to-step3" disabled style="opacity: 0.5; cursor: not-allowed;">
-                        Mulai Kuesioner <i class="fas fa-arrow-right ml-2"></i>
-                    </button>
+                <div class="relative">
+                  <input
+                    type="radio"
+                    name="jenis_skrining"
+                    id="skrining_sdq"
+                    value="SDQ"
+                    class="peer sr-only radio-custom"
+                    onchange="toggleKuesioner()"
+                  />
+                  <label
+                    for="skrining_sdq"
+                    class="block p-4 border-2 rounded-lg cursor-pointer transition-colors hover:bg-gray-50 peer-checked:ring-2 peer-checked:ring-indigo-500 peer-checked:border-indigo-500 h-full"
+                  >
+                    <i
+                      class="fas fa-child text-2xl mb-2 text-gray-400 peer-checked:text-indigo-600"
+                    ></i>
+                    <div class="font-bold">Skrining SDQ</div>
+                    <div class="text-xs text-gray-500 font-normal mt-1">
+                      Untuk Anak & Remaja (Usia 4 - 17 Tahun)
+                    </div>
+                  </label>
                 </div>
+              </div>
+
+              <!-- Pilihan Tambahan Khusus EPDS -->
+              <div
+                id="container-nifas"
+                class="hidden mt-4 p-4 bg-pink-50 rounded-lg border border-pink-100"
+              >
+                <label class="block text-sm font-bold text-pink-800 mb-2"
+                  >Kondisi Kehamilan / Nifas Saat Ini: *</label
+                >
+                <select
+                  id="jenis_nifas"
+                  class="w-full md:w-1/2 border-gray-300 rounded-md shadow-sm p-2 border focus:ring-pink-500 focus:border-pink-500"
+                >
+                  <option value="">-- Pilih Kondisi --</option>
+                  <option value="Hamil Trimester 1">Hamil Trimester 1</option>
+                  <option value="Hamil Trimester 2">Hamil Trimester 2</option>
+                  <option value="Hamil Trimester 3">Hamil Trimester 3</option>
+                  <option value="Nifas (< 40 Hari)">
+                    Nifas (< 40 Hari pasca melahirkan)
+                  </option>
+                  <option value="Pasca Nifas">Pasca Nifas</option>
+                </select>
+              </div>
             </div>
-
-            <!-- STEP 3: KUESIONER DINAMIS -->
-            <div id="step3" class="step-container hidden animate-fade-in">
-                <div id="kuesioner-phq4" class="hidden bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden animate-fade-in"><div class="bg-indigo-600 px-6 py-4"><h2 class="text-lg font-bold text-white">Kuesioner PHQ-4</h2><p class="text-indigo-100 text-sm">Pilih jawaban sesuai perasaan Anda dalam <b>2 minggu terakhir</b>.</p></div><div class="p-6 space-y-6" id="phq4-questions-container"></div></div>
-                <div id="kuesioner-epds" class="hidden bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden animate-fade-in"><div class="bg-pink-600 px-6 py-4"><h2 class="text-lg font-bold text-white">Kuesioner EPDS</h2><p class="text-pink-100 text-sm">Pilih jawaban yang paling mirip dengan perasaan Anda <b>selama 7 hari terakhir</b>.</p></div><div class="p-6 space-y-6" id="epds-questions-container"></div></div>
-                <div id="kuesioner-sdq" class="hidden bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden animate-fade-in"><div class="bg-teal-600 px-6 py-4"><h2 class="text-lg font-bold text-white">Kuesioner SDQ</h2><p class="text-teal-100 text-sm">Berikan jawaban sebagaimana sesuatu telah terjadi pada anak <b>selama 6 bulan terakhir</b>.</p></div><div class="p-6 space-y-6" id="sdq-questions-container"></div></div>
-
-                <div class="mt-6 flex justify-between pb-8">
-                    <button type="button" onclick="prevStep(2)" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-6 rounded-lg transition-colors">
-                        <i class="fas fa-arrow-left mr-2"></i> Kembali
-                    </button>
-                    <button type="submit" id="btn-submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-transform transform hover:scale-105 hidden">
-                        <span id="btn-text"><i class="fas fa-clipboard-check mr-2"></i> Simpan & Hitung Hasil</span>
-                        <span id="btn-loading" class="hidden"><div class="loader"></div> Menyimpan...</span>
-                    </button>
-                </div>
-            </div>
-        </form>
-
-        <!-- SECTION 4: HASIL SKRINING -->
-        <div id="result-section" class="hidden space-y-6 animate-fade-in mb-12">
-            <div class="bg-white rounded-xl shadow-md p-6 md:p-8 text-center border-t-8 border-indigo-600 relative">
-                <!-- Indikator Sukses Simpan -->
-                <div id="success-badge" class="absolute top-4 right-4 bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold border border-green-300">
-                    <i class="fas fa-cloud-check mr-1"></i> Tersimpan di Database
-                </div>
-
-                <h2 class="text-3xl font-bold text-gray-800 mb-2 mt-4">Hasil Skrining</h2>
-                <p class="text-gray-500 mb-6">Nama Pasien: <strong id="res-nama" class="text-gray-800"></strong> | Usia: <strong id="res-usia" class="text-gray-800"></strong> Tahun</p>
-
-                <div id="result-cards-container" class="grid grid-cols-1 gap-6 mb-6"></div>
-
-                <div class="bg-gray-50 rounded-lg p-5 border text-left">
-                    <h3 class="font-bold text-lg mb-3 flex items-center"><i class="fas fa-info-circle text-indigo-500 mr-2"></i> Interpretasi & Tindak Lanjut:</h3>
-                    <div id="res-tindak-lanjut" class="text-gray-700 leading-relaxed space-y-2"></div>
-                </div>
-
-                <div class="mt-8 flex flex-col md:flex-row justify-center gap-4">
-                    <button type="button" onclick="downloadPDF()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold py-2 px-6 rounded-lg transition-colors">
-                        <i class="fas fa-file-pdf mr-2"></i> Unduh Hasil PDF
-                    </button>
-                    <button type="button" onclick="resetApp()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-6 rounded-lg transition-colors">
-                        <i class="fas fa-redo mr-2"></i> Skrining Baru
-                    </button>
-                </div>
-            </div>
+          </div>
+          <!-- Tombol Navigasi Step 2 -->
+          <div class="mt-6 flex justify-between">
+            <button
+              type="button"
+              onclick="prevStep(1)"
+              class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-6 rounded-lg transition-colors"
+            >
+              <i class="fas fa-arrow-left mr-2"></i> Kembali
+            </button>
+            <button
+              type="button"
+              onclick="nextStep(3)"
+              class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-lg transition-colors"
+              id="btn-to-step3"
+              disabled
+              style="opacity: 0.5; cursor: not-allowed"
+            >
+              Mulai Kuesioner <i class="fas fa-arrow-right ml-2"></i>
+            </button>
+          </div>
         </div>
 
-        <!-- HIDDEN PRINT AREA -->
-        <div id="print-area" class="hidden bg-white p-8 text-black" style="width: 800px; max-width: none;">
-            <!-- Kop Surat -->
-            <div class="border-b-4 border-black pb-4 mb-6 flex items-center justify-between">
-                <div>
-                    <h1 class="text-2xl font-bold uppercase">Laporan Hasil Skrining Kesehatan Jiwa</h1>
-                    <p class="text-sm">Dicetak secara otomatis oleh Sistem CKG (Cek Kesehatan Gratis)</p>
-                </div>
+        <!-- STEP 3: KUESIONER DINAMIS -->
+        <div id="step3" class="step-container hidden animate-fade-in">
+          <div
+            id="kuesioner-phq4"
+            class="hidden bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden animate-fade-in"
+          >
+            <div class="bg-indigo-600 px-6 py-4">
+              <h2 class="text-lg font-bold text-white">Kuesioner PHQ-4</h2>
+              <p class="text-indigo-100 text-sm">
+                Pilih jawaban sesuai perasaan Anda dalam
+                <b>2 minggu terakhir</b>.
+              </p>
             </div>
-
-            <!-- Biodata -->
-            <table class="w-full text-sm mb-6">
-                <tbody>
-                    <tr><td class="w-1/4 font-bold py-1">Tanggal Skrining</td><td class="w-2">:</td><td id="pdf-tgl"></td></tr>
-                    <tr><td class="w-1/4 font-bold py-1">Nama Pasien</td><td class="w-2">:</td><td id="pdf-nama"></td></tr>
-                    <tr><td class="w-1/4 font-bold py-1">NIK</td><td class="w-2">:</td><td id="pdf-nik"></td></tr>
-                    <tr><td class="w-1/4 font-bold py-1">Usia</td><td class="w-2">:</td><td id="pdf-usia"></td></tr>
-                    <tr><td class="w-1/4 font-bold py-1">Alamat</td><td class="w-2">:</td><td class="pdf-alamat break-words"></td></tr>
-                </tbody>
-            </table>
-
-            <!-- Hasil -->
-            <div class="border border-gray-400 p-4 mb-6 bg-gray-50">
-                <h3 class="font-bold text-lg mb-2 border-b border-gray-300 pb-2">Kesimpulan Evaluasi</h3>
-                <div class="grid grid-cols-2 gap-4 mb-4">
-                    <div>
-                        <p class="text-xs text-gray-500 uppercase">Jenis Instrumen</p>
-                        <p class="font-bold text-lg" id="pdf-jenis"></p>
-                    </div>
-                    <div>
-                        <p class="text-xs text-gray-500 uppercase">Skor Hasil</p>
-                        <p class="font-bold text-lg" id="pdf-skor"></p>
-                    </div>
-                </div>
-                <div class="bg-white p-3 border border-gray-300 rounded">
-                    <p class="text-xs text-gray-500 uppercase mb-1">Status Kesimpulan Rekomendasi</p>
-                    <p class="font-black text-xl" id="pdf-status"></p>
-                </div>
+            <div class="p-6 space-y-6" id="phq4-questions-container"></div>
+          </div>
+          <div
+            id="kuesioner-epds"
+            class="hidden bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden animate-fade-in"
+          >
+            <div class="bg-pink-600 px-6 py-4">
+              <h2 class="text-lg font-bold text-white">Kuesioner EPDS</h2>
+              <p class="text-pink-100 text-sm">
+                Pilih jawaban yang paling mirip dengan perasaan Anda
+                <b>selama 7 hari terakhir</b>.
+              </p>
             </div>
+            <div class="p-6 space-y-6" id="epds-questions-container"></div>
+          </div>
+          <div
+            id="kuesioner-sdq"
+            class="hidden bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden animate-fade-in"
+          >
+            <div class="bg-teal-600 px-6 py-4">
+              <h2 class="text-lg font-bold text-white">Kuesioner SDQ</h2>
+              <p class="text-teal-100 text-sm">
+                Berikan jawaban sebagaimana sesuatu telah terjadi pada anak
+                <b>selama 6 bulan terakhir</b>.
+              </p>
+            </div>
+            <div class="p-6 space-y-6" id="sdq-questions-container"></div>
+          </div>
 
-            <!-- Tindak Lanjut -->
+          <div class="mt-6 flex justify-between pb-8">
+            <button
+              type="button"
+              onclick="prevStep(2)"
+              class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-6 rounded-lg transition-colors"
+            >
+              <i class="fas fa-arrow-left mr-2"></i> Kembali
+            </button>
+            <button
+              type="submit"
+              id="btn-submit"
+              class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-transform transform hover:scale-105 hidden"
+            >
+              <span id="btn-text"
+                ><i class="fas fa-clipboard-check mr-2"></i> Simpan & Hitung
+                Hasil</span
+              >
+              <span id="btn-loading" class="hidden"
+                ><div class="loader"></div>
+                Menyimpan...</span
+              >
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <!-- SECTION 4: HASIL SKRINING -->
+      <div id="result-section" class="hidden space-y-6 animate-fade-in mb-12">
+        <div
+          class="bg-white rounded-xl shadow-md p-6 md:p-8 text-center border-t-8 border-indigo-600 relative"
+        >
+          <!-- Indikator Sukses Simpan -->
+          <div
+            id="success-badge"
+            class="absolute top-4 right-4 bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold border border-green-300"
+          >
+            <i class="fas fa-cloud-check mr-1"></i> Tersimpan di Database
+          </div>
+
+          <h2 class="text-3xl font-bold text-gray-800 mb-2 mt-4">
+            Hasil Skrining
+          </h2>
+          <p class="text-gray-500 mb-6">
+            Nama Pasien: <strong id="res-nama" class="text-gray-800"></strong> |
+            Usia: <strong id="res-usia" class="text-gray-800"></strong> Tahun
+          </p>
+
+          <div
+            id="result-cards-container"
+            class="grid grid-cols-1 gap-6 mb-6"
+          ></div>
+
+          <div class="bg-gray-50 rounded-lg p-5 border text-left">
+            <h3 class="font-bold text-lg mb-3 flex items-center">
+              <i class="fas fa-info-circle text-indigo-500 mr-2"></i>
+              Interpretasi & Tindak Lanjut:
+            </h3>
+            <div
+              id="res-tindak-lanjut"
+              class="text-gray-700 leading-relaxed space-y-2"
+            ></div>
+          </div>
+
+          <div class="mt-8 flex flex-col md:flex-row justify-center gap-4">
+            <button
+              type="button"
+              onclick="downloadPDF()"
+              class="bg-slate-800 hover:bg-slate-900 text-white font-bold py-2 px-6 rounded-lg transition-colors"
+            >
+              <i class="fas fa-file-pdf mr-2"></i> Unduh Hasil PDF
+            </button>
+            <button
+              type="button"
+              onclick="resetApp()"
+              class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-6 rounded-lg transition-colors"
+            >
+              <i class="fas fa-redo mr-2"></i> Skrining Baru
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- HIDDEN PRINT AREA -->
+      <div
+        id="print-area"
+        class="hidden bg-white p-8 text-black"
+        style="width: 800px; max-width: none"
+      >
+        <!-- Kop Surat -->
+        <div
+          class="border-b-4 border-black pb-4 mb-6 flex items-center justify-between"
+        >
+          <div>
+            <h1 class="text-2xl font-bold uppercase">
+              Laporan Hasil Skrining Kesehatan Jiwa
+            </h1>
+            <p class="text-sm">
+              Dicetak secara otomatis oleh Sistem CKG (Cek Kesehatan Gratis)
+            </p>
+          </div>
+        </div>
+
+        <!-- Biodata -->
+        <table class="w-full text-sm mb-6">
+          <tbody>
+            <tr>
+              <td class="w-1/4 font-bold py-1">Tanggal Skrining</td>
+              <td class="w-2">:</td>
+              <td id="pdf-tgl"></td>
+            </tr>
+            <tr>
+              <td class="w-1/4 font-bold py-1">Nama Pasien</td>
+              <td class="w-2">:</td>
+              <td id="pdf-nama"></td>
+            </tr>
+            <tr>
+              <td class="w-1/4 font-bold py-1">NIK</td>
+              <td class="w-2">:</td>
+              <td id="pdf-nik"></td>
+            </tr>
+            <tr>
+              <td class="w-1/4 font-bold py-1">Usia</td>
+              <td class="w-2">:</td>
+              <td id="pdf-usia"></td>
+            </tr>
+            <tr>
+              <td class="w-1/4 font-bold py-1">Alamat</td>
+              <td class="w-2">:</td>
+              <td class="pdf-alamat break-words"></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Hasil -->
+        <div class="border border-gray-400 p-4 mb-6 bg-gray-50">
+          <h3 class="font-bold text-lg mb-2 border-b border-gray-300 pb-2">
+            Kesimpulan Evaluasi
+          </h3>
+          <div class="grid grid-cols-2 gap-4 mb-4">
             <div>
-                <h3 class="font-bold border-b border-black pb-1 mb-2">Tindak Lanjut & Rekomendasi</h3>
-                <div id="pdf-tindak-lanjut" class="text-sm"></div>
+              <p class="text-xs text-gray-500 uppercase">Jenis Instrumen</p>
+              <p class="font-bold text-lg" id="pdf-jenis"></p>
             </div>
-
-            <div class="mt-12 text-right text-xs text-gray-500">
-                * Dokumen ini dibuat melalui Sistem CKG dan sah tanpa tanda tangan.
+            <div>
+              <p class="text-xs text-gray-500 uppercase">Skor Hasil</p>
+              <p class="font-bold text-lg" id="pdf-skor"></p>
             </div>
+          </div>
+          <div class="bg-white p-3 border border-gray-300 rounded">
+            <p class="text-xs text-gray-500 uppercase mb-1">
+              Status Kesimpulan Rekomendasi
+            </p>
+            <p class="font-black text-xl" id="pdf-status"></p>
+          </div>
         </div>
 
+        <!-- Tindak Lanjut -->
+        <div>
+          <h3 class="font-bold border-b border-black pb-1 mb-2">
+            Tindak Lanjut & Rekomendasi
+          </h3>
+          <div id="pdf-tindak-lanjut" class="text-sm"></div>
+        </div>
+
+        <div class="mt-12 text-right text-xs text-gray-500">
+          * Dokumen ini dibuat melalui Sistem CKG dan sah tanpa tanda tangan.
+        </div>
+      </div>
     </main>
 
     <script src="assets/js/app.js"></script>
-</body>
+  </body>
 </html>
